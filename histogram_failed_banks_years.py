@@ -74,8 +74,8 @@ print number_banks
 # ###
 
 fig, ax  = plt.subplots(1, 1)
-ax.plot(years, number_banks, 'ro')
-ax.set_title('Number of Failed Banks vs. Year\n(2000-2014 U.S. Sample)')
+ax.plot(years, number_banks, '-o')
+ax.set_title('Number of Failed Banks vs. Year\n(2000-2017 U.S. Sample)')
 ax.set_xlabel('Year')
 ax.set_ylabel('Number of Failed Banks')
 
@@ -92,8 +92,8 @@ make_PLTW_style(ax)
 fig_year.show()
 
 #Bar graph
-plt.bar(17, number_banks, 1/1.5, color='blue')
-plt.xticks(17, years)
+plt.bar(years, number_banks)
+plt.xticks(years, years)
 plt.ylabel("Number of Failed Banks")
 plt.xlabel("Year")
 plt.title("Failed Bank Distribution in US By Year")
