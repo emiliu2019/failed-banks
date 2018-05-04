@@ -9,6 +9,8 @@ Current Population Survey.
 '''
 import matplotlib.pyplot as plt
 import csv
+import numpy as np 
+import math
 
 # A generic helper function for matplotlib.pyplot graphics
 def make_PLTW_style(axes):
@@ -37,13 +39,14 @@ headers = datareader.next() # read first row and store separately
 years=[]
 dates=[]
 number_banks=[]
+months=[]
 
 for row in datareader:
     year= ((row[5]))
-    if ('20'+year[-2:] not in years):
-        years.append('20'+year[-2:])  
+    year = '20' + str(year[-2:])
+    if (year not in years):
+        years.append(year)  
     dates.append(row[5])
-print years
 number = 0
 for year in years:
     for date in dates:
@@ -51,30 +54,21 @@ for year in years:
             number+=1
     number_banks.append(number)
     number =0
-print number_banks
 
-#Create scatterplot 
-fig, ax  = plt.subplots(1, 1)
-ax.plot(years, number_banks, '-o') #'-o' connects points, ro leaves them discrete
-ax.set_title('Number of Failed Banks vs. Year\n(2000-2017 U.S. Sample)')
-ax.set_xlabel('Year')
-ax.set_ylabel('Number of Failed Banks')
-
-fig.show()
-
-#Histogram 1
-fig_year, ax  = plt.subplots(1, 1)
-a = ax.hist(number_banks, color='cyan', bins=range(2000,2017,1)) 
-ax.set_title('Failed Bank Distribution in 2000-2017 U.S. Sample')
-ax.set_xlabel('Year')
-ax.set_ylabel('Number of Failed Banks')
-make_PLTW_style(ax)
-fig_year.show()
+# #Create scatterplot 
+# fig_year, ax  = plt.subplots(1, 1)
+# ax.plot(years, number_banks, '-o') #'-o' connects points, ro leaves them discrete
+# ax.set_title('Number of Failed Banks vs. Year\n(2000-2017 U.S. Sample)')
+# ax.set_xlabel('Year')
+# plt.xticks(np.linspace(2000, 2017, 18, endpoint=True))
+# ax.set_ylabel('Number of Failed Banks')
+# fig_year.show()
 
 #Bar graph
-plt.bar(years, number_banks)
-plt.xticks(years, years)
-plt.ylabel("Number of Failed Banks")
-plt.xlabel("Year")
-plt.title("Failed Bank Distribution in US By Year")
+fig, ax=plt.subplots(1,1)
+width = 0.35
+bar_graph=ax.bar([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], number_banks, width, align='center', color='blue')
+ax.set_ylabel("Number of Failed Banks")
+ax.set_xlabel("Year")
+ax.set_title("Failed Bank Distribution in US By Year")
 plt.show()
