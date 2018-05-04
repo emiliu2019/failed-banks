@@ -8,7 +8,8 @@ income = pd.read_excel("quarterlyincome.xls")
 income = income[income.columns[::-1]]
 income.set_index('time', inplace=True)
 income = income.transpose()
-print income
+selected_income = income.loc['2000Q1':, 'Domestic office loans':'Other interest income']
+print selected_income.head()
 
 df=pd.DataFrame({'x': range(1,11), 'y1': np.random.randn(10), 'y2': np.random.randn(10)+range(1,11), 'y3': np.random.randn(10)+range(11,21), 'y4': np.random.randn(10)+range(6,16), 'y5': np.random.randn(10)+range(4,14)+(0,0,0,0,0,0,0,-3,-8,-6), 'y6': np.random.randn(10)+range(2,12), 'y7': np.random.randn(10)+range(5,15), 'y8': np.random.randn(10)+range(4,14) })
 print df
