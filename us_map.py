@@ -1,3 +1,6 @@
+'''Creates a map of US with states colorized based on number of bank failures
+between 2000 and 2017. A darker color indicates more failures.'''
+
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
