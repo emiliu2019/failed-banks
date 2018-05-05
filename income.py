@@ -15,6 +15,7 @@ banklist = pd.read_csv("banklist.csv")
 closes = list(banklist["Closing Date"])
 quarters = []
 
+# congregate closing dates of banks into quarterly data
 for y in range(2000,2017):
     for q in range(1,5):
         dates = []
@@ -25,8 +26,10 @@ for y in range(2000,2017):
 quarters = quarters[:-1]
 quarters = [i * 10 for i in quarters]
 
+# set graph style
 plt.style.use('seaborn-darkgrid')
 
+# set figure dimensions
 my_dpi=96
 plt.figure(figsize=(480/my_dpi, 480/my_dpi), dpi=my_dpi)
 
@@ -39,6 +42,7 @@ for column in selected_income.drop('times', axis=1):
 plt.xticks(list(range(67)), list(selected_income['times']), rotation=60)
 plt.plot(list(range(67)), income.loc['2000Q1':, 'Total interest income'], marker='', color='orange', linewidth=4, alpha=0.7)
 
+# Add scatter plot values displaying quarterly acquired banks
 plt.xticks(list(range(67)), list(selected_income['times']), rotation=60)
 plt.scatter(list(range(67)), [-15000]*67, s=quarters, c='orange')
 
