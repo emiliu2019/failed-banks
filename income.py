@@ -3,46 +3,51 @@ import pandas as pd
 import numpy as np
 import os
 
-print os.getcwd()
+# Format quarterly income table
 income = pd.read_excel("quarterlyincome.xls")
 income = income[income.columns[::-1]]
 income.set_index('time', inplace=True)
 income = income.transpose()
 selected_income = income.loc['2000Q1':, 'Domestic office loans':'Other interest income']
-print selected_income.head()
+selected_income['times'] = list(selected_income.index.values)
+banklist = pd.read_csv("banklist.csv")
 
-df=pd.DataFrame({'x': range(1,11), 'y1': np.random.randn(10), 'y2': np.random.randn(10)+range(1,11), 'y3': np.random.randn(10)+range(11,21), 'y4': np.random.randn(10)+range(6,16), 'y5': np.random.randn(10)+range(4,14)+(0,0,0,0,0,0,0,-3,-8,-6), 'y6': np.random.randn(10)+range(2,12), 'y7': np.random.randn(10)+range(5,15), 'y8': np.random.randn(10)+range(4,14) })
-print df
-#plt.style.use('fivethirtyeight')
+closes = list(banklist["Closing Date"])
+quarters = []
+
+for y in range(2000,2017):
+    for q in range(1,5):
+        dates = []
+        for c in closes:
+            if str(y) in c and (c.startswith(str(3*q-2)+'/') or c.startswith(str(3*q-1)+'/') or c.startswith(str(3*q)+'/')):
+                dates.append(c)
+        quarters.append(len(dates))
+quarters = quarters[:-1]
+quarters = [i * 10 for i in quarters]
+
 plt.style.use('seaborn-darkgrid')
 
 my_dpi=96
 plt.figure(figsize=(480/my_dpi, 480/my_dpi), dpi=my_dpi)
 
 # multiple line plot
-for column in df.drop('x', axis=1):
-   plt.plot(df['x'], df[column], marker='', color='grey', linewidth=1, alpha=0.4)
+for column in selected_income.drop('times', axis=1):
+    plt.xticks(list(range(67)), list(selected_income['times']), rotation=60)
+    plt.plot(list(range(67)), list(selected_income[column]), marker='', color='grey', linewidth=1, alpha=0.4)
 
-# Now re do the interesting curve, but biger with distinct color
-plt.plot(df['x'], df['y5'], marker='', color='orange', linewidth=4, alpha=0.7)
+# Add the interesting curve, but bigger with distinct color
+plt.xticks(list(range(67)), list(selected_income['times']), rotation=60)
+plt.plot(list(range(67)), income.loc['2000Q1':, 'Total interest income'], marker='', color='orange', linewidth=4, alpha=0.7)
 
-# Change xlim
-plt.xlim(0,12)
+plt.xticks(list(range(67)), list(selected_income['times']), rotation=60)
+plt.scatter(list(range(67)), [-15000]*67, s=quarters, c='orange')
 
-# Let's annotate the plot
-num=0
-for i in df.values[9][1:]:
-   num+=1
-   name=list(df)[num]
-   if name != 'y5':
-      plt.text(10.2, i, name, horizontalalignment='left', size='small', color='grey')
-
-# And add a special annotation for the group we are interested in
-plt.text(10.2, df.y5.tail(1), 'Mr Orange', horizontalalignment='left', size='small', color='orange')
+# Add legend
+plt.legend(loc=2, ncol=2)
 
 # Add titles
-plt.title("Evolution of Mr Orange vs other students", loc='left', fontsize=12, fontweight=0, color='orange')
-plt.xlabel("Time")
-plt.ylabel("Score")
+plt.xlabel("Quarter")
+plt.ylabel("Income ($ millions)")
 
+# Display graph
 plt.show()
